@@ -1,32 +1,43 @@
 package ucf.assignments;
 
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListOperations {
 
-    public static List<Item> createNewList(){
-        //initialize a new array list with objects
 
-        return null;
-    }
-
-    public List<Item> onlyCompleted(List<Item> ToDoList){
+    public List<Item> onlyCompleted(ObservableList<Item> ToDoList){
         //go through the ToDoList, and add all completed Items to a new list
         //init. new array list CompletedList of items.
-        //iterate thru initial to do list.
-        //completed items have true for boolean value
-        //if the item is COMPLETE add it to new completedList
-        return null;
+        List<Item> CompleteSort = new ArrayList<>();
+        //iterate through initial to do list.
+        for(Item item : ToDoList){
+            //completed items have true for boolean value
+            if(item.isComplete()){
+                //if the item is COMPLETE add it to new completedList
+                CompleteSort.add(item);
+            }
+        }
+        //return the list of only completed items
+        return CompleteSort;
     }
 
-    public List<Item> onlyIncomplete(List<Item> ToDoList){
+    public List<Item> onlyIncomplete(ObservableList<Item> ToDoList){
         //go through the ToDoList, and add all incomplete Items to a new list
-        //init. new array list of items IncompletedList
-        //iterate through initial to do list
-        //incomplete items have false for boolean value.
-        //if the item is INCOMPLETE add it to new IncompletedList
-        return null;
+        //init. new array list IncompleteList of items.
+        List<Item> IncompleteSort = new ArrayList<>();
+        //iterate through initial to do list.
+        for(Item item : ToDoList){
+            //incomplete items have false for boolean value
+            if(!item.isComplete()){
+                //if the item is INCOMPLETE add it to new incompleteList
+                IncompleteSort.add(item);
+            }
+        }
+        //return the list of only incomplete items
+        return IncompleteSort;
     }
 
     public List<Item> addItem(List<Item> ToDoList, boolean isComplete, String Name, String date, String description){

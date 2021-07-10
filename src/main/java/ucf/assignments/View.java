@@ -2,8 +2,7 @@ package ucf.assignments;
 
 public enum View {
     APP("App.fxml"),
-    LIST("List.fxml"),
-    NEWITEM("NewItem.fxml");
+    LIST("List.fxml");
 
     private String fileName;
 

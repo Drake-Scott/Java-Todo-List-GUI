@@ -1,14 +1,16 @@
 package ucf.assignments;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -17,25 +19,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ListController {
+public class ListController implements Initializable {
 
     public static ListOperations lo = new ListOperations();
     public static FileOperations fo = new FileOperations();
-    public static NewItemController nic = new NewItemController();
     public static FileChooser fc = new FileChooser();
 
     public static List<Item> todoList = new ArrayList<>();
+    public ObservableList<Item> obsList = FXCollections.observableArrayList(todoList);
+    static Item currentItem;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb){
+        obsList.add(new Item(true,"hello","uhhh"));
+        ListTable.setItems(obsList);
+        ListTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Item>() {
+            //When you select an item from the list view, this sets current item variable to that item.
+            @Override
+            public void changed(ObservableValue<? extends Item> observable, Item oldValue, Item newValue) {
+                currentItem = ListTable.getSelectionModel().getSelectedItem();
+            }
+        });
+    }
 
     @FXML
-    TableView ListTable;
+    ListView<Item> ListTable;
     @FXML
-    TableColumn SelectCol;
+    TextField YearSelect;
     @FXML
-    TableColumn CompleteCol;
+    TextField MonthSelect;
     @FXML
-    TableColumn DateCol;
+    TextField DaySelect;
     @FXML
-    TableColumn TaskCol;
+    TextField DescriptionBox;
     @FXML
     Button AddItemButton;
     @FXML
@@ -52,18 +68,33 @@ public class ListController {
     Button LoadListButton;
 
     @FXML
-    public void initialize(URL url, ResourceBundle rb){
-        final ObservableList<Item> data = FXCollections.observableList(todoList);
-        CompleteCol.setCellValueFactory(new PropertyValueFactory<Item, Boolean>("isComplete"));
-    }
-
-    @FXML
     public void AddItemClicked(ActionEvent actionEvent) {
-        ViewSwitcher.switchTo(View.NEWITEM);
+        String description = DescriptionBox.getText();
+        String year = YearSelect.getText();
+        String month = MonthSelect.getText();
+        String day = DaySelect.getText();
+        String dueDate = year+"-"+month+"-"+day;
+        Item newItem = new Item(false, description, dueDate);
+        obsList.add(newItem);
+        ListTable.setItems(obsList);
     }
 
     @FXML
     public void RemoveClicked(ActionEvent actionEvent) {
+        Item itemToRemove = currentItem;
+        int selectedIndex = 0;
+        //iterate through the observable list
+        for(Item item : obsList){
+            //if the object equals the object we wish to remove, note the index.
+            if(item == itemToRemove){
+                selectedIndex = obsList.indexOf(item);
+            }
+        }
+        obsList.remove(selectedIndex);
+    }
+
+    @FXML
+    public void CompleteClicked(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -82,14 +113,29 @@ public class ListController {
 
     @FXML
     public void CompleteOn(ActionEvent actionEvent) {
+        //If the checkbox for incomplete sort is on,
+        if (IncompleteBox.isSelected()) {
+            //turn it off.
+            IncompleteBox.setSelected(false);
+        }
+
+
     }
 
     @FXML
     public void IncompleteOn(ActionEvent actionEvent) {
+        //If the checkbox for complete sort is on,
+        if (CompleteBox.isSelected()) {
+            //turn it off.
+            CompleteBox.setSelected(false);
+        }
+
     }
 
     @FXML
     public void DeleteAll(ActionEvent actionEvent) {
+        //set the entire list to be empty.
+        obsList.setAll();
     }
 
     @FXML
@@ -105,4 +151,10 @@ public class ListController {
         }
 
     }
+
+    public void BackClicked(ActionEvent actionEvent) {
+        ViewSwitcher.switchTo(View.APP);
+    }
+
+
 }
