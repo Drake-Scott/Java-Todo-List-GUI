@@ -1,20 +1,22 @@
 package ucf.assignments;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
-import javax.swing.text.TableView;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListController {
 
     ListOperations lo = new ListOperations();
+    FileOperations fo = new FileOperations();
+    NewItemController nic = new NewItemController();
+
+    public static List<Item> todoList = new ArrayList<>();
 
     public void AddItemClicked(ActionEvent actionEvent) {
         ViewSwitcher.switchTo(View.NEWITEM);
-
     }
 
     public void RemoveClicked(ActionEvent actionEvent) {
@@ -36,8 +38,9 @@ public class ListController {
         FileChooser fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
         if (selectedFile != null){
+            String filePath = "";
+            todoList = fo.populateListFromJson(filePath);
         } else {
-
         }
     }
 }

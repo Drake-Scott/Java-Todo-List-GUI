@@ -1,7 +1,11 @@
 package ucf.assignments;
 
-import com.google.gson.*;
-import java.io.*;
+import com.google.gson.Gson;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +13,7 @@ public class FileOperations {
     public static Gson gson = new Gson();
     //see exercise 41 for help.
 
+    /*
     public static List<Item> populateListFromJson(String filePath){
 
         File input = new File(filePath);
@@ -42,11 +47,30 @@ public class FileOperations {
         }
 
         return todoList;
+    }*/
+
+
+
+    public void serializeList(String filePath, List<Item> todoList) throws Exception{
+        FileOutputStream fos = new FileOutputStream(filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(todoList);
+        oos.close();
+        fos.close();
     }
 
-    public void addKeyToMaster(){
-        //when a user creates a new list, what they type as the title will become the key that links to that list
-        //this program will open up the master.txt file and add the string to it
+    public List<Item> deserializeList(String filePath) throws Exception{
+        List<Item> todoList = new ArrayList<>();
+
+        FileInputStream fis = new FileInputStream(filePath);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+
+        todoList = (List<Item>) ois.readObject();
+
+        ois.close();
+        fis.close();
+
+        return todoList;
     }
 
 }

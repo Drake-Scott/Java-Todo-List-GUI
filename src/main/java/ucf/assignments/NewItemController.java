@@ -17,17 +17,17 @@ public class NewItemController {
     @FXML
     TextField DayField;
 
-    public void FinalizeClicked(ActionEvent actionEvent) {
+    public Item FinalizeClicked(ActionEvent actionEvent) {
         String description = DescriptionBox.getText();
-        String year = "";
-        String month = "";
-        String day = "";
+        String year = YearField.getText();
+        String month = MonthField.getText();
+        String day = DayField.getText();
         String dueDate = year+"-"+month+"-"+day;
         Item newItem = new Item(false, description, dueDate);
 
-
         //go back to the list view
         ViewSwitcher.switchTo(View.LIST);
-
+        //return the new item from the user input
+        return newItem;
     }
 }

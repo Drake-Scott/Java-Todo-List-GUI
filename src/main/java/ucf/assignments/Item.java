@@ -1,8 +1,9 @@
 package ucf.assignments;
 
+import java.io.Serializable;
 
 //This will serve as an object to populate the individual lists
-public class Item {
+public class Item implements Serializable {
 
     //static variables, boolean isComplete, and 3 Strings: name, description, and due date.
     public boolean isComplete;
