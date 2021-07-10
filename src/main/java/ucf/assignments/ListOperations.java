@@ -1,17 +1,17 @@
 package ucf.assignments;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListOperations {
 
 
-    public List<Item> onlyCompleted(ObservableList<Item> ToDoList){
+    public ObservableList<Item> onlyCompleted(ObservableList<Item> ToDoList){
         //go through the ToDoList, and add all completed Items to a new list
         //init. new array list CompletedList of items.
-        List<Item> CompleteSort = new ArrayList<>();
+        ObservableList<Item> CompleteSort = FXCollections.observableArrayList();
         //iterate through initial to do list.
         for(Item item : ToDoList){
             //completed items have true for boolean value
@@ -24,10 +24,10 @@ public class ListOperations {
         return CompleteSort;
     }
 
-    public List<Item> onlyIncomplete(ObservableList<Item> ToDoList){
+    public ObservableList<Item> onlyIncomplete(ObservableList<Item> ToDoList){
         //go through the ToDoList, and add all incomplete Items to a new list
         //init. new array list IncompleteList of items.
-        List<Item> IncompleteSort = new ArrayList<>();
+        ObservableList<Item> IncompleteSort = FXCollections.observableArrayList();
         //iterate through initial to do list.
         for(Item item : ToDoList){
             //incomplete items have false for boolean value

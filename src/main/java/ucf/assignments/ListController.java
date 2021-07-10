@@ -38,6 +38,16 @@ public class ListController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Item> observable, Item oldValue, Item newValue) {
                 currentItem = ListTable.getSelectionModel().getSelectedItem();
+                //If the selected item is completed, set the completion checkbox to true.
+                if(currentItem != null) {
+                    if (currentItem.isComplete()) {
+                        CompleteSelection.setSelected(true);
+                    }
+                    //otherwise set it to false.
+                    else {
+                        CompleteSelection.setSelected(false);
+                    }
+                }
             }
         });
     }
@@ -62,6 +72,8 @@ public class ListController implements Initializable {
     CheckBox CompleteBox;
     @FXML
     CheckBox IncompleteBox;
+    @FXML
+    CheckBox CompleteSelection;
     @FXML
     Button DeleteAllButton;
     @FXML
@@ -95,6 +107,19 @@ public class ListController implements Initializable {
 
     @FXML
     public void CompleteClicked(ActionEvent actionEvent) {
+        Item temp = currentItem;
+        if(currentItem != null) {
+            if (currentItem.isComplete()) {
+                temp.setComplete(false);
+            } else if (!currentItem.isComplete()) {
+                temp.setComplete(true);
+            }
+        }
+        int idx = obsList.indexOf(currentItem);
+        obsList.remove(currentItem);
+        obsList.add(idx, temp);
+        ListTable.setItems(obsList);
+        ListTable.scrollTo(idx + 1);
     }
 
     @FXML
@@ -118,7 +143,18 @@ public class ListController implements Initializable {
             //turn it off.
             IncompleteBox.setSelected(false);
         }
-
+        //if the box is switched to be checked on:
+        if(CompleteBox.isSelected()){
+            //create a new sorted list from the list operations onlyCompleted() function.
+            ObservableList<Item> CompleteSort = lo.onlyCompleted(obsList);
+            //set the list table to display only those items.
+            ListTable.setItems(CompleteSort);
+        }
+        //if the box is switched to be checked off
+        else{
+            //set the list table to the original observable list.
+            ListTable.setItems(obsList);
+        }
 
     }
 
@@ -129,13 +165,26 @@ public class ListController implements Initializable {
             //turn it off.
             CompleteBox.setSelected(false);
         }
-
+        //if the box is switched to be checked on:
+        if(IncompleteBox.isSelected()){
+            //create a new sorted list from the list operations onlyCompleted() function.
+            ObservableList<Item> IncompleteSort = lo.onlyIncomplete(obsList);
+            //set the list table to display only those items.
+            ListTable.setItems(IncompleteSort);
+        }
+        //if the box is switched to be checked off
+        else{
+            //set the list table to the original observable list.
+            ListTable.setItems(obsList);
+        }
     }
 
     @FXML
     public void DeleteAll(ActionEvent actionEvent) {
         //set the entire list to be empty.
         obsList.setAll();
+        //reset the listview
+        ListTable.setItems(obsList);
     }
 
     @FXML

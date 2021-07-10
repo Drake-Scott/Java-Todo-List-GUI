@@ -46,10 +46,10 @@ public class Item implements Serializable {
     public String toString(){
         String conditional = "";
         if (isComplete){
-            conditional = "COMPLETED - ";
+            conditional = "COMPLETED --- ";
         }
 
-        String output = conditional + getDueDate() + " - " + getDescription();
+        String output = conditional + getDueDate() + " --- " + getDescription();
 
         return output;
     }
