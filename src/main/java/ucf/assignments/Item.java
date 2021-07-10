@@ -1,5 +1,7 @@
 package ucf.assignments;
 
+import javafx.scene.control.CheckBox;
+
 import java.io.Serializable;
 
 //This will serve as an object to populate the individual lists
@@ -9,6 +11,7 @@ public class Item implements Serializable {
     public boolean isComplete;
     public String description;
     public String dueDate;
+    private CheckBox select;
     //insert appropriate getters and setters.
 
 
@@ -16,6 +19,7 @@ public class Item implements Serializable {
         this.isComplete = isComplete;
         this.description = description;
         this.dueDate = dueDate;
+        this.select = new CheckBox();
     }
 
     public boolean isComplete() {
@@ -40,5 +44,13 @@ public class Item implements Serializable {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public CheckBox getSelect() {
+        return select;
+    }
+
+    public void setSelect(CheckBox select) {
+        this.select = select;
     }
 }

@@ -1,75 +1,53 @@
 package ucf.assignments;
 
-import com.google.gson.Gson;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileOperations {
-    public static Gson gson = new Gson();
-    //see exercise 41 for help.
 
-    /*
-    public static List<Item> populateListFromJson(String filePath){
+    //Method to serialize a list to a text file at the desired file path.
+    public void serializeList(String filePath, List<Item> todoList){
+        try {
 
-        File input = new File(filePath);
+            //create file and object output streams because my object class implements serializable
+            FileOutputStream fos = new FileOutputStream(filePath);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            //write the list of objects to the output file using object output stream.
+            oos.writeObject(todoList);
+
+            //close the object and file output streams
+            oos.close();
+            fos.close();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public List<Item> deserializeList(File filePath){
+
+        //initialize an empty list of items that will serve as our return list.
         List<Item> todoList = new ArrayList<>();
 
         try {
-            //User Gson to parse elements into Product object.
-            JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
-            JsonObject fileObject = fileElement.getAsJsonObject();
 
-            //Extract the data from Json file to appropriate data types.
-            JsonArray arrayOfItems = fileObject.get("items").getAsJsonArray();
+            //create file and object input streams because my object class implements serializable
+            FileInputStream fis = new FileInputStream(filePath);
+            ObjectInputStream ois = new ObjectInputStream(fis);
 
-            //Iterate through each element of the Json file.
-            for (JsonElement itemElement : arrayOfItems){
+            //populate the todolist from the object input stream.
+            todoList = (List<Item>) ois.readObject();
 
-                //Create Json Object using Gson
-                JsonObject itemJsonObject = itemElement.getAsJsonObject();
+            //close the object and file input streams
+            ois.close();
+            fis.close();
 
-                //For each element of the Json file, get the name, price, and quantity.
-                boolean isComplete = itemJsonObject.get("isComplete").getAsBoolean();
-                String description = itemJsonObject.get("description").getAsString();
-                String dueDate = itemJsonObject.get("dueDate").getAsString();
-
-                //create a new product with the previous information and add it to the list
-                Item item = new Item(isComplete, description, dueDate);
-                todoList.add(item);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return todoList;
-    }*/
-
-
-
-    public void serializeList(String filePath, List<Item> todoList) throws Exception{
-        FileOutputStream fos = new FileOutputStream(filePath);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(todoList);
-        oos.close();
-        fos.close();
-    }
-
-    public List<Item> deserializeList(String filePath) throws Exception{
-        List<Item> todoList = new ArrayList<>();
-
-        FileInputStream fis = new FileInputStream(filePath);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
-        todoList = (List<Item>) ois.readObject();
-
-        ois.close();
-        fis.close();
-
+        //return the now populated todolist
         return todoList;
     }
 

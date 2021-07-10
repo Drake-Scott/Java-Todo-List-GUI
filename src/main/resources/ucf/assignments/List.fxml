@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16"
-          fx:controller="ucf.assignments.ListController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ListController">
   <columnConstraints>
     <ColumnConstraints />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -37,7 +35,7 @@
          <columns>
             <TableColumn fx:id="SelectCol" prefWidth="42.000062346458435" text="Select" />
             <TableColumn fx:id="DateCol" prefWidth="85.33324813842773" text="YYYY-MM-DD" />
-            <TableColumn fx:id="TaskCol" prefWidth="272.66673278808594" text="Task" />
+            <TableColumn fx:id="TaskCol" maxWidth="1.7976931348623157E308" prefWidth="272.66673278808594" text="Task" />
             <TableColumn fx:id="CompleteCol" minWidth="0.0" prefWidth="68.6666259765625" text="Complete?" />
          </columns>
       </TableView>
