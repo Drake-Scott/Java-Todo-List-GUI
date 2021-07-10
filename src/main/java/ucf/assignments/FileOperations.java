@@ -1,42 +1,52 @@
 package ucf.assignments;
 
+import com.google.gson.*;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileOperations {
-
-    /*
-    PLAN: I will have a File master.txt that contains the name of every list that has been created.
-    This can act like keys to a hashmap with the values being the to do lists. Map<String, List<Item>>;
-    I will have a directory that contains text files, each of them named after a to do list within the master list.
-    when the user wants to load a list it will populate the list from the formatted text file within the directory.
-    when the user wants to add a list it will create a new textfile within the directory, and add its name to master.txt
-    */
-
+    public static Gson gson = new Gson();
     //see exercise 41 for help.
 
-    public static List populateList(){
-        //when the client loads a list, this function is called to create that list from external storage
-        return null;
+    public static List<Item> populateListFromJson(String filePath){
+
+        File input = new File(filePath);
+        List<Item> todoList = new ArrayList<>();
+
+        try {
+            //User Gson to parse elements into Product object.
+            JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
+            JsonObject fileObject = fileElement.getAsJsonObject();
+
+            //Extract the data from Json file to appropriate data types.
+            JsonArray arrayOfItems = fileObject.get("items").getAsJsonArray();
+
+            //Iterate through each element of the Json file.
+            for (JsonElement itemElement : arrayOfItems){
+
+                //Create Json Object using Gson
+                JsonObject itemJsonObject = itemElement.getAsJsonObject();
+
+                //For each element of the Json file, get the name, price, and quantity.
+                boolean isComplete = itemJsonObject.get("isComplete").getAsBoolean();
+                String description = itemJsonObject.get("description").getAsString();
+                String dueDate = itemJsonObject.get("dueDate").getAsString();
+
+                //create a new product with the previous information and add it to the list
+                Item item = new Item(isComplete, description, dueDate);
+                todoList.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return todoList;
     }
 
     public void addKeyToMaster(){
         //when a user creates a new list, what they type as the title will become the key that links to that list
         //this program will open up the master.txt file and add the string to it
     }
-
-    public void deleteListFromDirectory(){
-        //this function is called in the function below
-        //searches for .txt file named after key String user typed in
-        //deletes that file
-    }
-
-    public void removeListFromMaster(){
-        //when user wants to delete a list this function runs
-        //opens the master.txt file and removes the String inputted by the user.
-        //remove the key and value from the hashmap.
-        //calls the deleteListFromDirectory() method.
-    }
-
-
 
 }

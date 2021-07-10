@@ -1,6 +1,7 @@
 package ucf.assignments;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,11 +16,12 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception{
         try {
             Parent root = FXMLLoader.load(getClass().getResource("App.fxml"));
-
             Scene scene = new Scene(root);
+            ViewSwitcher.setScene(scene);
+            ViewSwitcher.switchTo(View.APP);
 
             primaryStage.setScene(scene);
             primaryStage.setTitle("To-Do Lists");
@@ -29,4 +31,5 @@ public class App extends Application {
             e.printStackTrace();
         }
     }
+
 }

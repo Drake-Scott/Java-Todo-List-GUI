@@ -7,13 +7,7 @@ public class ListOperations {
 
     public static List<Item> createNewList(){
         //initialize a new array list with objects
-        //add it to the hash map
-        return null;
-    }
 
-    //This particular function is extra credit
-    public List<Item> sortListByDate(List<Item> ToDoList){
-        //use comparator collection.
         return null;
     }
 
