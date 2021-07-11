@@ -27,6 +27,7 @@ public class ListController implements Initializable {
     public static List<Item> todoList = new ArrayList<>();
     public ObservableList<Item> obsList = FXCollections.observableArrayList(todoList);
     static Item currentItem;
+    static boolean isSaved;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -81,6 +82,7 @@ public class ListController implements Initializable {
 
     @FXML
     public void AddItemClicked(ActionEvent actionEvent) {
+        isSaved = false;
         String description = DescriptionBox.getText();
         LocalDate dueDate = datePicker.getValue();
         Item newItem = new Item(false, description, dueDate);
@@ -90,6 +92,7 @@ public class ListController implements Initializable {
 
     @FXML
     public void RemoveClicked(ActionEvent actionEvent) {
+        isSaved = false;
         Item itemToRemove = currentItem;
         int selectedIndex = 0;
         //iterate through the observable list
@@ -104,6 +107,7 @@ public class ListController implements Initializable {
 
     @FXML
     public void CompleteClicked(ActionEvent actionEvent) {
+        isSaved = false;
         //create a temporary item that will replace the current item with differing boolean completion.
         Item temp = currentItem;
         //if the current item exists (is selected):
@@ -151,7 +155,7 @@ public class ListController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        isSaved = true;
     }
 
     @FXML
@@ -199,6 +203,7 @@ public class ListController implements Initializable {
 
     @FXML
     public void DeleteAll(ActionEvent actionEvent) {
+        isSaved = false;
         //set the entire list to be empty.
         obsList.setAll();
         //reset the listview
@@ -207,15 +212,23 @@ public class ListController implements Initializable {
 
     @FXML
     public void LoadListClicked(ActionEvent actionEvent) {
-
+        isSaved = false;
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
         fc.setTitle("Choose Text File");
         try{
             List<Item> deserializerList = new ArrayList<>();
             File selectedFile = fc.showOpenDialog(null);
-            deserializerList = fo.deserializeList(selectedFile);
-            obsList = FXCollections.observableArrayList(deserializerList);
-            ListTable.setItems(obsList);
+            if(selectedFile == null){
+                Alert helpAlert = new Alert(Alert.AlertType.ERROR);
+                helpAlert.setHeaderText("No list selected!");
+                helpAlert.setContentText("select a previously saved list, or create a new one by adding \nitems");
+                helpAlert.showAndWait();
+            }
+            else {
+                deserializerList = fo.deserializeList(selectedFile);
+                obsList = FXCollections.observableArrayList(deserializerList);
+                ListTable.setItems(obsList);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,6 +237,7 @@ public class ListController implements Initializable {
 
     @FXML
     public void OverwriteClicked(ActionEvent actionEvent) {
+        isSaved = false;
         //create a temporary item that will replace the current item with differing date and/or description
         Item temp = currentItem;
         //if the current item exists (is selected):
@@ -253,6 +267,15 @@ public class ListController implements Initializable {
     }
 
     public void HelpButtonClicked(ActionEvent actionEvent) {
-        ViewSwitcher.switchTo(View.HELP);
+        //if the list is not empty, or the last action was to save it:
+        if(obsList.size() == 0 || isSaved == true){
+            //switch the view to help
+            ViewSwitcher.switchTo(View.HELP);
+        } else {
+            Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
+            helpAlert.setHeaderText("Going to the help screen deletes the current list!");
+            helpAlert.setContentText("save your list with the bottom right button first!\n(or delete the items)");
+            helpAlert.showAndWait();
+        }
     }
 }
