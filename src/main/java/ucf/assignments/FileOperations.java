@@ -7,7 +7,7 @@ import java.util.List;
 public class FileOperations {
 
     //Method to serialize a list to a text file at the desired file path.
-    public void serializeList(String filePath, List<Item> todoList){
+    public void serializeList(File filePath, List<Item> todoList){
         try {
 
             //create file and object output streams because my object class implements serializable

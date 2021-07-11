@@ -30,7 +30,7 @@ public class ListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        obsList.add(new Item(true,"hello", LocalDate.of(1999,12,21)));
+        //obsList.add(new Item(true,"hello", LocalDate.of(1999,12,21)));
         ListTable.setItems(obsList);
         ListTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Item>() {
             //When you select an item from the list view, this sets current item variable to that item.
@@ -141,9 +141,13 @@ public class ListController implements Initializable {
         fc.setTitle("Save Dialog");
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
         try{
+            List<Item> serializerList = new ArrayList<>();
+            for(int i = 0; i < obsList.size(); i++){
+                serializerList.add(obsList.get(i));
+            }
             File file = fc.showSaveDialog(null);
             fc.setInitialDirectory(file.getParentFile()); //saves previous chosen directory for saving the lists.
-
+            fo.serializeList(file, serializerList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -206,18 +210,16 @@ public class ListController implements Initializable {
 
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
         fc.setTitle("Choose Text File");
-        try {
+        try{
+            List<Item> deserializerList = new ArrayList<>();
             File selectedFile = fc.showOpenDialog(null);
-            todoList = fo.deserializeList(selectedFile);
+            deserializerList = fo.deserializeList(selectedFile);
+            obsList = FXCollections.observableArrayList(deserializerList);
+            ListTable.setItems(obsList);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
-
-    @FXML
-    public void BackClicked(ActionEvent actionEvent) {
-        ViewSwitcher.switchTo(View.APP);
     }
 
     @FXML
