@@ -6,51 +6,64 @@ main()
 start()
 }
 
-class ListOperations {
-    sortByComplete()
-    sortByInomplete()
-    createNewList()
-    sortByDate()
-    addItem()
-    removeItem()
+enum View{
+View.LIST
+View.HELP
 }
 
-class Controller {
+class ViewSwitcher{
+setScene()
+switchTo(View view)
+}
 
+class ListOperations {
+onlyCompleted()
+onlyIncomplete()
+}
+
+class ListController {
+initialize()
+AddItemClicked()
+RemoveClicked()
+CompleteClicked
+SaveClicked()
+CompleteOn()
+IncompleteOn()
+DeleteAll()
+LoadListClicked()
+OverwriteClicked()
+HelpButtonClicked()
 }
 
 class Item {
-String name
 boolean isComplete
 String description
-String dueDate
-Getters and Setters
+LocalDate dueDate
+Constructor()
+Getters()
+Setters()
 }
 
-class MapOperations {
-getMap()
-addList()
-loadList()
-deleteList()
-}
 
 class FileOperations {
-populateList()
-addKeyToMaster()
-deleteListFromDirectory()
-deleteListFromMap()
+serializeList()
+deserializeList()
+}
 
+class HelpController{
+BackClicked()
 }
 
 javafx.Application <|-- App
-App - Controller
-App <--- MapOperations
-App <--- ListOperations
-MapOperations - ListOperations
-ListOperations <-- Item
-ListOperations <-- FileOperations
-MapOperations <-- FileOperations
+App <-- ListController
 
+HelpController -> ListController
+HelpController <- ListController
+ListController <--  ListOperations
+ListOperations <-- Item
+ListController <-- FileOperations
+ListController <- ViewSwitcher
+View --> ViewSwitcher
 
 
 

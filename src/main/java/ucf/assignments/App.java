@@ -15,10 +15,12 @@ import java.io.IOException;
 
 public class App extends Application {
 
+    //main function launches the application.
     public static void main(String[] args) {
         launch(args);
     }
 
+    //start function creates and sets the scene to view the initial list.
     @Override
     public void start(Stage primaryStage) throws Exception{
         try {

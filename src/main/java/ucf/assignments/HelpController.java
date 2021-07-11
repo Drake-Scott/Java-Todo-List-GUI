@@ -5,27 +5,13 @@
 
 package ucf.assignments;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class HelpController {
 
-public class HelpController implements Initializable {
-
-    @FXML
-    private ImageView imageView;
-
-
+    //this scene shows an image that helps user operate the application
+    //if the back button is clicked, switch back to the view of the list scene.
     public void BackClicked(ActionEvent actionEvent) {
         ViewSwitcher.switchTo(View.LIST);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Image img = new Image("file:images/HelpScreen.png");
-        imageView.setImage(img);
-    }
 }

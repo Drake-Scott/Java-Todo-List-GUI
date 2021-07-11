@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
@@ -24,13 +23,15 @@ import java.util.ResourceBundle;
 
 public class ListController implements Initializable {
 
+    //create static variables for list operations, file operations, and a file chooser.
     public static ListOperations lo = new ListOperations();
     public static FileOperations fo = new FileOperations();
     public static FileChooser fc = new FileChooser();
 
-
+    //create variables for an array list and the observable list that will be displayed in the application.
     public static List<Item> todoList = new ArrayList<>();
     public ObservableList<Item> obsList = FXCollections.observableArrayList(todoList);
+    //set static variables for current selected item, and whether or not the list has been saved.
     static Item currentItem;
     static boolean isSaved;
 
@@ -62,7 +63,7 @@ public class ListController implements Initializable {
         });
     }
 
-
+    //declare all FXML elements.
     @FXML
     ListView<Item> ListTable;
     @FXML
@@ -89,17 +90,23 @@ public class ListController implements Initializable {
     @FXML
     public void AddItemClicked(ActionEvent actionEvent) {
         isSaved = false;
+        //if either entry fields for a new item are invalid, dont allow user to input item.
         if(DescriptionBox.getText() == "" || datePicker.getValue() == null){
+            //send an error alert that user must enter more information before inputting a task.
             Alert completeAlert = new Alert(Alert.AlertType.ERROR);
             completeAlert.setHeaderText("Invalid Entry");
             completeAlert.setContentText("Please enter date and description");
             completeAlert.showAndWait();
         }
         else {
+            //populate description and date variables from appropriate nodes on GUI
             String description = DescriptionBox.getText();
             LocalDate dueDate = datePicker.getValue();
+            //create a new, incomplete item using desired information
             Item newItem = new Item(false, description, dueDate);
+            //add that item to the observable list
             obsList.add(newItem);
+            //update the listview.
             ListTable.setItems(obsList);
         }
     }
@@ -156,19 +163,27 @@ public class ListController implements Initializable {
 
     @FXML
     public void SaveClicked(ActionEvent actionEvent) {
+        //set up file chooser to save a text file.
         fc.setTitle("Save Dialog");
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
         try{
+            //create a new array list for serializing from the observable list
             List<Item> serializerList = new ArrayList<>();
+            //iterate through every item in the observable list
             for(int i = 0; i < obsList.size(); i++){
+                //add each item to the serializer list.
                 serializerList.add(obsList.get(i));
             }
+            //show the file chooser save window.
             File file = fc.showSaveDialog(null);
+            //set initial directory so anytime a filechooser opens it starts here.
             fc.setInitialDirectory(file.getParentFile()); //saves previous chosen directory for saving the lists.
+            //save the serialized list to the desired file with desired info.
             fo.serializeList(file, serializerList);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //set isSaved to true.
         isSaved = true;
     }
 
@@ -222,26 +237,35 @@ public class ListController implements Initializable {
         obsList.setAll();
         //reset the listview
         ListTable.setItems(obsList);
+        //set the description box and date picker back to null.
         DescriptionBox.setText(null);
         datePicker.setValue(null);
     }
 
     @FXML
     public void LoadListClicked(ActionEvent actionEvent) {
+        //list is loaded from file
+        //set file chooser to only pick from .txt files
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
         fc.setTitle("Choose Text File");
         try{
+            //create a list that will get input from file and populate observable list
             List<Item> deserializerList = new ArrayList<>();
             File selectedFile = fc.showOpenDialog(null);
+            //If selected file does not exist or no file is selected:
             if(selectedFile == null){
+                //Create a new error alert
                 Alert helpAlert = new Alert(Alert.AlertType.ERROR);
                 helpAlert.setHeaderText("No list selected!");
                 helpAlert.setContentText("select a previously saved list, or create a new one by adding \nitems");
                 helpAlert.showAndWait();
             }
             else {
+                //deserialize text file into the list
                 deserializerList = fo.deserializeList(selectedFile);
+                //populate observable list with the elements of the new list
                 obsList = FXCollections.observableArrayList(deserializerList);
+                //update the listview.
                 ListTable.setItems(obsList);
             }
         } catch (Exception e) {
@@ -288,6 +312,7 @@ public class ListController implements Initializable {
             //switch the view to help
             ViewSwitcher.switchTo(View.HELP);
         } else {
+            //otherwise, create a new alert. going to help menu will delete the current list in app.
             Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
             helpAlert.setHeaderText("Going to the help screen deletes the current list!");
             helpAlert.setContentText("save your list with the bottom right button first!\n(or delete the items)");

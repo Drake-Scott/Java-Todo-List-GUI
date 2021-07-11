@@ -6,6 +6,8 @@
 package ucf.assignments;
 
 public enum View {
+
+    //enum for both scenes.
     LIST("List.fxml"),
     HELP("Help.fxml");
 
