@@ -91,11 +91,12 @@ public class ListController implements Initializable {
     public void AddItemClicked(ActionEvent actionEvent) {
         isSaved = false;
         //if either entry fields for a new item are invalid, dont allow user to input item.
-        if(DescriptionBox.getText() == "" || datePicker.getValue() == null){
+        if(DescriptionBox.getText() == "" || datePicker.getValue() == null ||
+        DescriptionBox.getText().length() >= 256){
             //send an error alert that user must enter more information before inputting a task.
             Alert completeAlert = new Alert(Alert.AlertType.ERROR);
             completeAlert.setHeaderText("Invalid Entry");
-            completeAlert.setContentText("Please enter date and description");
+            completeAlert.setContentText("Please enter date and description no longer\nthan 256 characters");
             completeAlert.showAndWait();
         }
         else {
@@ -279,8 +280,9 @@ public class ListController implements Initializable {
         isSaved = false;
         //create a temporary item that will replace the current item with differing date and/or description
         Item temp = currentItem;
-        //if the current item exists (is selected):
-        if(currentItem != null) {
+        //if the current item exists (is selected) and valid date and description are selected:
+        if(currentItem != null && datePicker.getValue() != null &&
+                DescriptionBox.getText().length() >= 256) {
             //keep the completion status static
             temp.setComplete(currentItem.isComplete());
             //set the date and description to whatever is present in the corresponding nodes.
@@ -292,7 +294,8 @@ public class ListController implements Initializable {
             //create and display an appropriate alert message
             Alert overwriteAlert = new Alert(Alert.AlertType.ERROR);
             overwriteAlert.setHeaderText("Invalid Selection");
-            overwriteAlert.setContentText("Please select an item.");
+            overwriteAlert.setContentText("Please select an item to change its date\nor description" +
+                    " (no more than 256 characters)");
             overwriteAlert.showAndWait();
         }
         //save the index of current item to integer variable.
