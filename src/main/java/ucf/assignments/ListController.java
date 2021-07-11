@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 4 Solution
+ *  Copyright 2021 Drake Scott
+ */
+
 package ucf.assignments;
 
 import javafx.beans.value.ChangeListener;
@@ -56,6 +61,7 @@ public class ListController implements Initializable {
             }
         });
     }
+
 
     @FXML
     ListView<Item> ListTable;
@@ -222,7 +228,6 @@ public class ListController implements Initializable {
 
     @FXML
     public void LoadListClicked(ActionEvent actionEvent) {
-        isSaved = false;
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
         fc.setTitle("Choose Text File");
         try{
@@ -276,6 +281,7 @@ public class ListController implements Initializable {
         ListTable.setItems(obsList);
     }
 
+    @FXML
     public void HelpButtonClicked(ActionEvent actionEvent) {
         //if the list is not empty, or the last action was to save it:
         if(obsList.size() == 0 || isSaved == true){

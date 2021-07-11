@@ -1,3 +1,8 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 4 Solution
+ *  Copyright 2021 Drake Scott
+ */
+
 package ucf.assignments;
 
 import javafx.application.Application;
