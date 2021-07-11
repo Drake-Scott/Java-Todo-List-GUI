@@ -1,7 +1,6 @@
 package ucf.assignments;
 
 public enum View {
-    APP("App.fxml"),
     LIST("List.fxml"),
     HELP("Help.fxml");
 

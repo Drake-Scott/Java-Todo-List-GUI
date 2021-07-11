@@ -83,11 +83,19 @@ public class ListController implements Initializable {
     @FXML
     public void AddItemClicked(ActionEvent actionEvent) {
         isSaved = false;
-        String description = DescriptionBox.getText();
-        LocalDate dueDate = datePicker.getValue();
-        Item newItem = new Item(false, description, dueDate);
-        obsList.add(newItem);
-        ListTable.setItems(obsList);
+        if(DescriptionBox.getText() == "" || datePicker.getValue() == null){
+            Alert completeAlert = new Alert(Alert.AlertType.ERROR);
+            completeAlert.setHeaderText("Invalid Entry");
+            completeAlert.setContentText("Please enter date and description");
+            completeAlert.showAndWait();
+        }
+        else {
+            String description = DescriptionBox.getText();
+            LocalDate dueDate = datePicker.getValue();
+            Item newItem = new Item(false, description, dueDate);
+            obsList.add(newItem);
+            ListTable.setItems(obsList);
+        }
     }
 
     @FXML
@@ -208,6 +216,8 @@ public class ListController implements Initializable {
         obsList.setAll();
         //reset the listview
         ListTable.setItems(obsList);
+        DescriptionBox.setText(null);
+        datePicker.setValue(null);
     }
 
     @FXML
