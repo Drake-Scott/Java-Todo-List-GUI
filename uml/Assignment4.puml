@@ -60,7 +60,8 @@ App <-- ListController
 HelpController -> ListController
 HelpController <- ListController
 ListController <--  ListOperations
-ListOperations <-- Item
+ListController <-- Item
+Item -> ListOperations
 ListController <-- FileOperations
 ListController <- ViewSwitcher
 View --> ViewSwitcher
