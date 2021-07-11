@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ListController">
   <columnConstraints>
@@ -35,17 +37,23 @@
          </GridPane.margin>
       </Button>
       <Button fx:id="RemoveButton" mnemonicParsing="false" onAction="#RemoveClicked" text="Remove Selection" GridPane.columnIndex="5" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-      <Button fx:id="SaveButton" mnemonicParsing="false" onAction="#SaveClicked" text="SAVE" GridPane.columnIndex="5" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+      <Button fx:id="SaveButton" mnemonicParsing="false" onAction="#SaveClicked" text="SAVE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
          <GridPane.margin>
-            <Insets bottom="5.0" />
+            <Insets bottom="5.0" right="5.0" />
          </GridPane.margin></Button>
-      <CheckBox fx:id="CompleteBox" mnemonicParsing="false" onAction="#CompleteOn" text="Complete" GridPane.columnIndex="5" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-      <CheckBox fx:id="IncompleteBox" mnemonicParsing="false" onAction="#IncompleteOn" text="Incomplete" GridPane.columnIndex="5" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+      <CheckBox fx:id="CompleteBox" mnemonicParsing="false" onAction="#CompleteOn" text="Complete" GridPane.columnIndex="5" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets top="33.0" />
+         </GridPane.margin></CheckBox>
+      <CheckBox fx:id="IncompleteBox" mnemonicParsing="false" onAction="#IncompleteOn" text="Incomplete" GridPane.columnIndex="5" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </CheckBox>
-      <Label text="Sort By:" GridPane.columnIndex="5" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+      <Label text="Sort By:" GridPane.columnIndex="5" GridPane.rowIndex="3" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="35.0" />
+         </GridPane.margin></Label>
       <Button fx:id="DeleteAllButton" mnemonicParsing="false" onAction="#DeleteAll" text="DELETE ALL ITEMS" GridPane.columnIndex="5" GridPane.rowIndex="5" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="5.0" />
@@ -60,15 +68,13 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </ListView>
-      <Button fx:id="BackButton" mnemonicParsing="false" onAction="#BackClicked" text="BACK" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+      <CheckBox fx:id="CompleteSelection" mnemonicParsing="false" onAction="#CompleteClicked" text="Mark As Complete" GridPane.columnIndex="5" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <GridPane.margin>
-            <Insets bottom="5.0" right="5.0" />
+            <Insets top="10.0" />
          </GridPane.margin>
-      </Button>
-      <CheckBox fx:id="CompleteSelection" mnemonicParsing="false" onAction="#CompleteClicked" text="Completed" GridPane.columnIndex="5" GridPane.rowIndex="3" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets top="30.0" />
-         </GridPane.margin>
+         <font>
+            <Font size="11.0" />
+         </font>
       </CheckBox>
       <TextField fx:id="DescriptionBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Describe the Task..." GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <GridPane.margin>
@@ -81,6 +87,24 @@
          </GridPane.margin>
       </DatePicker>
       <Button fx:id="OverwriteButton" maxHeight="50.0" mnemonicParsing="false" onAction="#OverwriteClicked" text="Overwrite &#10;Current Item" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="5.0" top="10.0" />
+         </GridPane.margin>
+      </Button>
+      <Line opacity="0.33" startX="-100.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets bottom="20.0" />
+         </GridPane.margin>
+      </Line>
+      <Line opacity="0.33" startX="-100.0" GridPane.columnIndex="5" GridPane.rowIndex="4" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </Line>
+      <Button fx:id="HelpButton" mnemonicParsing="false" onAction="#HelpButtonClicked" text="HELP" textFill="RED" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+         <font>
+            <Font name="Comic Sans MS" size="17.0" />
+         </font>
          <GridPane.margin>
             <Insets right="5.0" top="10.0" />
          </GridPane.margin>

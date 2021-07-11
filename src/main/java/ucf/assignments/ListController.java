@@ -23,6 +23,7 @@ public class ListController implements Initializable {
     public static FileOperations fo = new FileOperations();
     public static FileChooser fc = new FileChooser();
 
+
     public static List<Item> todoList = new ArrayList<>();
     public ObservableList<Item> obsList = FXCollections.observableArrayList(todoList);
     static Item currentItem;
@@ -214,11 +215,12 @@ public class ListController implements Initializable {
 
     }
 
+    @FXML
     public void BackClicked(ActionEvent actionEvent) {
         ViewSwitcher.switchTo(View.APP);
     }
 
-
+    @FXML
     public void OverwriteClicked(ActionEvent actionEvent) {
         //create a temporary item that will replace the current item with differing date and/or description
         Item temp = currentItem;
@@ -226,7 +228,7 @@ public class ListController implements Initializable {
         if(currentItem != null) {
             //keep the completion status static
             temp.setComplete(currentItem.isComplete());
-            //set the date and description to whatever is present in the corresponding selection nodes.
+            //set the date and description to whatever is present in the corresponding nodes.
             temp.setDueDate(datePicker.getValue());
             temp.setDescription(DescriptionBox.getText());
         }
@@ -246,5 +248,9 @@ public class ListController implements Initializable {
         obsList.add(idx, temp);
         //reset the listview
         ListTable.setItems(obsList);
+    }
+
+    public void HelpButtonClicked(ActionEvent actionEvent) {
+        ViewSwitcher.switchTo(View.HELP);
     }
 }

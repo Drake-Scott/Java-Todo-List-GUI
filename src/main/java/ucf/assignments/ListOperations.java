@@ -3,8 +3,6 @@ package ucf.assignments;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.List;
-
 public class ListOperations {
 
 
@@ -38,18 +36,6 @@ public class ListOperations {
         }
         //return the list of only incomplete items
         return IncompleteSort;
-    }
-
-    public List<Item> addItem(List<Item> ToDoList, boolean isComplete, String Name, String date, String description){
-        //this function is ran when user clicks final add item button on the inputItem scene
-        //add newItem to the ToDoList
-        //new item's attributes are what use typed into the text fields.
-        return null;
-    }
-
-    public List<Item> removeItem(List<Item> ToDoList, Item itemToBeRemoved){
-        //remove itemToBeRemoved from the ToDoList
-        return null;
     }
 
 }
