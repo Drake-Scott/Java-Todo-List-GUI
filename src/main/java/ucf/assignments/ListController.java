@@ -7,14 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,15 +29,20 @@ public class ListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        obsList.add(new Item(true,"hello","uhhh"));
+        obsList.add(new Item(true,"hello", LocalDate.of(1999,12,21)));
         ListTable.setItems(obsList);
         ListTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Item>() {
             //When you select an item from the list view, this sets current item variable to that item.
             @Override
             public void changed(ObservableValue<? extends Item> observable, Item oldValue, Item newValue) {
                 currentItem = ListTable.getSelectionModel().getSelectedItem();
-                //If the selected item is completed, set the completion checkbox to true.
+                //if the current selected item exists:
                 if(currentItem != null) {
+                    //set the date picker to the current item's due date
+                    datePicker.setValue(currentItem.getDueDate());
+                    //set the description box to the current item's description
+                    DescriptionBox.setText(currentItem.getDescription());
+                    //If the selected item is completed, set the completion checkbox to true.
                     if (currentItem.isComplete()) {
                         CompleteSelection.setSelected(true);
                     }
@@ -54,12 +57,6 @@ public class ListController implements Initializable {
 
     @FXML
     ListView<Item> ListTable;
-    @FXML
-    TextField YearSelect;
-    @FXML
-    TextField MonthSelect;
-    @FXML
-    TextField DaySelect;
     @FXML
     TextField DescriptionBox;
     @FXML
@@ -78,14 +75,13 @@ public class ListController implements Initializable {
     Button DeleteAllButton;
     @FXML
     Button LoadListButton;
+    @FXML
+    DatePicker datePicker;
 
     @FXML
     public void AddItemClicked(ActionEvent actionEvent) {
         String description = DescriptionBox.getText();
-        String year = YearSelect.getText();
-        String month = MonthSelect.getText();
-        String day = DaySelect.getText();
-        String dueDate = year+"-"+month+"-"+day;
+        LocalDate dueDate = datePicker.getValue();
         Item newItem = new Item(false, description, dueDate);
         obsList.add(newItem);
         ListTable.setItems(obsList);
@@ -107,19 +103,36 @@ public class ListController implements Initializable {
 
     @FXML
     public void CompleteClicked(ActionEvent actionEvent) {
+        //create a temporary item that will replace the current item with differing boolean completion.
         Item temp = currentItem;
+        //if the current item exists (is selected):
         if(currentItem != null) {
+            //if item is complete, set the temp's completion to false.
             if (currentItem.isComplete()) {
                 temp.setComplete(false);
+                //if the current item is incomplete, set temp's completion to true.
             } else if (!currentItem.isComplete()) {
                 temp.setComplete(true);
             }
         }
+        //if the current item does not exist
+        else{
+            //create and display an appropriate alert message
+            Alert completeAlert = new Alert(Alert.AlertType.ERROR);
+            completeAlert.setHeaderText("Invalid Selection");
+            completeAlert.setContentText("Please select an item.");
+            completeAlert.showAndWait();
+            //set the box to be empty.
+            CompleteSelection.setSelected(false);
+        }
+        //save the index of current item to integer variable.
         int idx = obsList.indexOf(currentItem);
+        //remove the current item from observable list
         obsList.remove(currentItem);
+        //add the temp item at the appropriate index
         obsList.add(idx, temp);
+        //reset the listview
         ListTable.setItems(obsList);
-        ListTable.scrollTo(idx + 1);
     }
 
     @FXML
@@ -206,4 +219,32 @@ public class ListController implements Initializable {
     }
 
 
+    public void OverwriteClicked(ActionEvent actionEvent) {
+        //create a temporary item that will replace the current item with differing date and/or description
+        Item temp = currentItem;
+        //if the current item exists (is selected):
+        if(currentItem != null) {
+            //keep the completion status static
+            temp.setComplete(currentItem.isComplete());
+            //set the date and description to whatever is present in the corresponding selection nodes.
+            temp.setDueDate(datePicker.getValue());
+            temp.setDescription(DescriptionBox.getText());
+        }
+        //if the current item does not exist
+        else{
+            //create and display an appropriate alert message
+            Alert overwriteAlert = new Alert(Alert.AlertType.ERROR);
+            overwriteAlert.setHeaderText("Invalid Selection");
+            overwriteAlert.setContentText("Please select an item.");
+            overwriteAlert.showAndWait();
+        }
+        //save the index of current item to integer variable.
+        int idx = obsList.indexOf(currentItem);
+        //remove the current item from observable list
+        obsList.remove(currentItem);
+        //add the temp item at the appropriate index
+        obsList.add(idx, temp);
+        //reset the listview
+        ListTable.setItems(obsList);
+    }
 }

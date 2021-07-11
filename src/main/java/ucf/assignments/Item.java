@@ -1,6 +1,7 @@
 package ucf.assignments;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 //This will serve as an object to populate the individual lists
 public class Item implements Serializable {
@@ -8,11 +9,11 @@ public class Item implements Serializable {
     //static variables, boolean isComplete, and 3 Strings: name, description, and due date.
     public boolean isComplete;
     public String description;
-    public String dueDate;
+    public LocalDate dueDate;
     //insert appropriate getters and setters.
 
 
-    public Item(boolean isComplete, String description, String dueDate) {
+    public Item(boolean isComplete, String description, LocalDate dueDate) {
         this.isComplete = isComplete;
         this.description = description;
         this.dueDate = dueDate;
@@ -34,11 +35,11 @@ public class Item implements Serializable {
         this.description = description;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
