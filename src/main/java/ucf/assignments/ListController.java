@@ -283,7 +283,8 @@ public class ListController implements Initializable {
         Item temp = currentItem;
         //if the current item exists (is selected) and valid date and description are selected:
         if(currentItem != null && datePicker.getValue() != null &&
-                DescriptionBox.getText().length() >= 256) {
+                DescriptionBox.getText().length() <= 256
+                && DescriptionBox.getText() != "") {
             //keep the completion status static
             temp.setComplete(currentItem.isComplete());
             //set the date and description to whatever is present in the corresponding nodes.
