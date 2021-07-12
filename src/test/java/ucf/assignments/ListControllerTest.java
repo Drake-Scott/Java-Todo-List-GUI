@@ -1,5 +1,10 @@
 package ucf.assignments;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -10,8 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ListControllerTest {
 
-    //create a static list operations class.
-    static ListController lc = new ListController();
+    @FXML
+    Button AddItemButton;
+    @FXML
+    Button RemoveButton;
+    @FXML
+    Button DeleteAllButton;
+    @FXML
+    CheckBox CompleteBox;
+    static Item currentItem;
+
+    //create a static list controller class.
     static List<Item> todolist = new ArrayList<>();
 
     public static void populateTestLists(){
@@ -32,17 +46,62 @@ class ListControllerTest {
 
     @Test
     void addItemClicked() {
-    }
+        emptyTestList();
+        populateTestLists();
+        ObservableList<Item> obsList = FXCollections.observableArrayList(todolist);
+        String description = "test description";
+        LocalDate dueDate = LocalDate.of(1999,12,21);
+        //create a new, incomplete item using desired information
+        Item newItem = new Item(false, description, dueDate);
+        //add that item to the observable list
+        obsList.add(newItem);
 
-    @Test
-    void removeClicked() {
+        assertEquals(obsList.size(),(todolist.size() + 1));
     }
 
     @Test
     void completeClicked() {
+        emptyTestList();
+        populateTestLists();
+        ObservableList<Item> obsList = FXCollections.observableArrayList(todolist);
+        Item temp = new Item(false, "enter this cosmic realm", LocalDate.of(1999,12,21));
+        if(temp != null) {
+            //if item is complete, set the temp's completion to false.
+            if (temp.isComplete()) {
+                temp.setComplete(false);
+                //if the current item is incomplete, set temp's completion to true.
+            } else if (!temp.isComplete()) {
+                temp.setComplete(true);
+            }
+        }
+        assertTrue(temp.isComplete());
+    }
+
+    @Test
+    void completeClicked2() {
+        emptyTestList();
+        populateTestLists();
+        ObservableList<Item> obsList = FXCollections.observableArrayList(todolist);
+        Item temp = new Item(true, "eat grass", LocalDate.of(2069,04,20));
+        if(temp != null) {
+            //if item is complete, set the temp's completion to false.
+            if (temp.isComplete()) {
+                temp.setComplete(false);
+                //if the current item is incomplete, set temp's completion to true.
+            } else if (!temp.isComplete()) {
+                temp.setComplete(true);
+            }
+        }
+        assertFalse(temp.isComplete());
     }
 
     @Test
     void deleteAll() {
+        emptyTestList();
+        populateTestLists();
+        ObservableList<Item> obsList = FXCollections.observableArrayList(todolist);
+        emptyTestList();
+        obsList.setAll();
+        assertEquals(obsList.size(),0);
     }
 }

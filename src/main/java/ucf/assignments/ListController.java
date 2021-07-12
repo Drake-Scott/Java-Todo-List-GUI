@@ -116,15 +116,16 @@ public class ListController implements Initializable {
     public void RemoveClicked(ActionEvent actionEvent) {
         isSaved = false;
         Item itemToRemove = currentItem;
-        int selectedIndex = 0;
+        int selectedIndex;
         //iterate through the observable list
         for(Item item : obsList){
-            //if the object equals the object we wish to remove, note the index.
+            //if the object equals the object we wish to remove, note the index and remove it.
             if(item == itemToRemove){
                 selectedIndex = obsList.indexOf(item);
+                obsList.remove(selectedIndex);
+                return;
             }
         }
-        obsList.remove(selectedIndex);
     }
 
     @FXML
